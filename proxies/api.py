@@ -23,7 +23,7 @@ def index():
     return '<h2>hello</h2>'
 
 
-@app.route('/get')
+@app.route('/get/')
 def get_proxy():
     """获取随机可用代理"""
     conn = get_conn()
