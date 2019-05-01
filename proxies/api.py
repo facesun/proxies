@@ -36,7 +36,7 @@ def get_proxy():
         return result
 
 
-@app.route('/count')
+@app.route('/count/')
 def get_count():
     """获取代理总数"""
     conn = get_conn()
