@@ -30,7 +30,7 @@ class RedisClient:
     def add(self, proxy, score=INIT_SCORE):
         """添加一个代理，设置初始分数"""
         if not self.db.zscore(REDIS_KEY, proxy):
-            return self.db.zadd(REDIS_KEY, {proxy: score})
+            self.db.zadd(REDIS_KEY, {proxy: score})
 
     def random(self):
         """首先随机获取最高分的有效代理，不存在则按排名获取"""
@@ -38,7 +38,8 @@ class RedisClient:
         if len(result):
             return choice(result)
         else:
-            result = self.db.zrevrange(REDIS_KEY, 0, 100)
+            # 从分数前50的代理中随机获取一个
+            result = self.db.zrevrange(REDIS_KEY, 0, 50)
             if len(result):
                 return choice(result)
             else:
@@ -51,10 +52,6 @@ class RedisClient:
             return self.db.zincrby(REDIS_KEY, -1, proxy)
         else:
             return self.db.zrem(REDIS_KEY, proxy)
-
-    def exists(self, proxy):
-        """判断代理是否存在"""
-        return not self.db.zscore(REDIS_KEY, proxy) is None
 
     def max(self, proxy):
         """更新代理分数到最大值"""

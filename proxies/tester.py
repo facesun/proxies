@@ -61,6 +61,9 @@ class Tester:
 
     def run(self):
         asyncio.run(self.start())
+        # # python3.7之前的写法
+        # loop = asyncio.get_event_loop()
+        # loop.run_until_complete(self.start())
 
 
 if __name__ == '__main__':
